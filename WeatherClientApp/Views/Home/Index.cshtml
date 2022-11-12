@@ -1,0 +1,91 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@{
+    string ApiBaseUrl = @Configuration.GetSection("ApiBaseUrl").Value;
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .bordered {
+        border: 1px solid #f00;
+    }
+</style>
+
+<div class="col-lg-6 validation">
+    <div class="form-outline">
+        <label class="form-label" for="txtCity">City Name</label>
+        <input type="text" id="txtCity" class="form-control req" placeholder="City Name i-e Sydney, Melbourne" />
+        
+    </div>
+
+    <div class="form-outline">
+        <label class="form-label" for="txtCountry">Country Code</label>
+        <input type="text" id="txtCountry" class="form-control req" placeholder="Country Code i-e AU, US, UK" />
+    </div>
+
+    <div class="form-outline">
+        <label class="form-label" for="txtApiKey">API Key</label>
+        <input type="text" id="txtApiKey" class="form-control req" placeholder="Enter API Key" />
+    </div>
+    <br />
+    <div class="form-outline">
+        <button type="button" id="btnGet" class="btn btn-primary">Get Weather Data</button>
+    </div>
+    <br />
+    <div class="form-outline">
+        <label class="form-label" for="txtResponseDesc">Weather Description</label>
+        <textarea class="form-control" readonly="readonly" id="txtResponseDesc" rows="2"></textarea>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnGet").click(function () {
+                var Isvalid = true;
+                $('.validation').find('.req').each(function(){
+                  if($(this).val() == ''){
+                        $(this).addClass('bordered');
+                        Isvalid = false;
+                  }
+                  else {
+                        $(this).removeClass('bordered');
+                        Isvalid = true;
+                    }
+                });
+
+                if (Isvalid == false){
+                    return true;
+                }
+
+                $.ajax({
+                    type: "GET",
+                    url: '@ApiBaseUrl' + "CurrentWeather/GetWeather/" + $("#txtCity").val() + "/" + $("#txtCountry").val(),
+                    headers: { 'X-API-Key': $('#txtApiKey').val() },
+                    success: function (response) {
+                        $("#txtResponseDesc").val(response);
+                    },
+                    statusCode: {
+                        401: function (response) {
+                            $("#txtResponseDesc").val("Unauthorized: API Key missing or invalid");
+                        },
+                        400: function (response) {
+                            $("#txtResponseDesc").val("Bad Request: Request can't be processed");
+                        },
+                        404: function (response) {
+                            $("#txtResponseDesc").val("Not Found: The resouce not found");
+                        },
+                        429: function (response) {
+                            $("#txtResponseDesc").val("Limit Exceeded, try later.");
+                        }
+                    },                   
+                    error: function (xhr, status) {
+                        $("#txtResponseDesc").val("Error occured while calling the API" + xhr.code);
+
+                    }
+                });
+            });
+        });
+    </script>
+}
+
