@@ -1,0 +1,9 @@
+Assignment Manual describing Testing instruction and solution architecture:
+
+	Proposed solution contains two below Projects.
+		1- Customized Weather Data API consuming open weather map api with Rate Limiting based on customized 5 API Keys using Microsoft .NET 6.
+		2- Client application calling customized weather API using jQuery AJAX client.
+		
+		
+		
+	
