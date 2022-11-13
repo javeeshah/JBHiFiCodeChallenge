@@ -34,7 +34,7 @@ builder.Services.Configure<ClientRateLimitOptions>(options =>
             {
                 Endpoint = "*",
                 Period = "60m",
-                Limit = 2
+                Limit = 5
             }
         };
 });
