@@ -5,21 +5,34 @@ Assignment Manual describing Testing instruction and solution architecture:
 		1- Customized Weather Data API consuming open weather map api with Rate Limiting based on customized 5 API Keys using Microsoft .NET 6.
 		2- Client application calling customized weather API using jQuery AJAX client.
 		
-		
-		
 	The solution design architecture and testing details:
 
-		1- The back-end API service enabling cors cross domain requests processing.
-		2- Swagger OpenApi UI having API definition and endpoints specifications.
-		3- Utilizing Asp.Net core Rate Limiting library and pacakges.
-		4- The client API keys design architecture adding application middleware through DI.
-		5- List of 5 API keys required for API calls.
-		
+		(•) The back-end API service enabling cors cross domain requests processing.
+		(•) Swagger OpenApi UI having API definition and endpoints specifications.
+		(•) Utilizing Asp.Net core Rate Limiting library and pacakges.
+		(•) The client API keys design architecture adding application middleware through DI.
+		(•) List of 5 API keys required for API calls.		
 			1- "h3erkd849dfkkdj584djop03"
 			2- "ere34343dsfsderdfderkdfd"
 			3- "ery343oerie3ekrdfueireiu"
 			4- "dsfaeerdfleore3434oemdfd"
-			5- "34ue9rkdfjker93roeoru334"
+			5- "34ue9rkdfjker93roeoru334"		
+		(•) Client app using ASP.net MVC architecture.
+		(•) Consuming back-end weather API using jQuery AJAX calls.
+
+	Building, Running & Testing details:
+	
+		(•) The projects are using .NET Core MVC architecture with .NET 6.		
+		(•) The Base API URL is being used in client app as "localhost:{PORT} and the client app is reading the Base API URL from configuration 
+		    file (appsettings.json), which can be configured and changed accordingly.
+		(•) The client API Keys are based on string constants and five keys are configured in the appsettings.json file.
+		(•) AspNetCoreRateLimit nuget package is being used to implement API rate limits as it's the proven library to implement rate limiting in .NET core
+		    API projects, can be customized as well to implement IP based on client key based API rate limiting.
+		(•) The API Keys are implemented through injecting the customized middleware and the API expects customized header value of "X-API-Key".
+		(•) Instead of HTTP client, I have injected IHttpClientFactory and used it to send HTTP requests to OpenWeatherMap API.
+		(•) HTTPClientFactory is more reliable as it manages the network resources in an improved manner, taking care of disposing off the network connections.
+		(•) Both project should be built as individual assemblies and they must be running simultaneously in order to test them.
+		(•) Both the projects should be configured to run as multiple startup projects.
+		(•) The API can be deployed to cloud/on-premises in IIS and the Base URL in client app configuration file can be updated accordingly.
 		
-		6- Client app using ASP.net  
 	
